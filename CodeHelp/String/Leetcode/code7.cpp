@@ -1,7 +1,7 @@
 string orderCopy;
 class Solution {
 public:
-    
+    //static string ordercopy
     static bool cmp(char a, char b) {
         //logic ->
         //order wali string me dekho, k konsa character pehle 
