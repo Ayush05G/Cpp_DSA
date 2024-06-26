@@ -1,3 +1,4 @@
+//Hackerrank
 int sherlockAndAnagrams(string s)
 {
     unordered_map<string, int> anagramatic_substring_count;
