@@ -16,11 +16,17 @@ int mystoi(string s) {
         bool negative = s[i] == '-';
         negative == true ? i++ : i;
         while(i < len && s[i] >= '0' && s[i] <= '9'){
-            num = num*10 + s[i];
+            num = num*10 + s[i]-'0';
             i++;
         }
         num = negative ? -num : num;
         num = (num > INT_MAX) ? INT_MAX : num;
         num = (num < INT_MIN) ? INT_MIN : num;
-        return num;
+        return int(num);
+    }
+    int main(){
+        string s= "Ayush";
+        int converted=mystoi(s);
+        cout<<converted;
+        return 0;
     }
