@@ -1,6 +1,7 @@
 #include<iostream>
 #include<algorithm>
 #include<vector>
+#include<string>
 #include<limits.h>
 using namespace std;
 
@@ -29,6 +30,38 @@ using namespace std;
         cout<<endl;
     }  
   } */
+
+// LC 14 Good question to revise
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        string ans;
+        int i=0;
+        while(true){
+            char curr_ch=0;
+            for(auto str:strs){
+                if(i>=str.size()){
+                    curr_ch=0;
+                    break;
+                }
+                if(curr_ch==0){
+                    curr_ch=str[i];
+
+                }
+                else if(str[i]!=curr_ch){
+                    curr_ch=0;
+                    break;
+                }
+            }
+            if(curr_ch==0)
+            break;
+        
+        ans.push_back(curr_ch);
+        i++;
+    }
+    return ans;
+    }
+};
 
     int main(){
         /*int n;
