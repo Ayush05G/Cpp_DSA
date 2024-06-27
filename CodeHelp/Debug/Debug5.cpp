@@ -101,6 +101,29 @@ bool isVowel(char ch) {
         return t;
     }
 
+    /*
+Test Case:
+Input: word1 = "abc", word2 = "pqr"
+Output: "apbqcr"
+*/
+string mergeAlternately(string word1, string word2) {
+        int m = word1.size();
+        int n = word2.size();
+        string result = "";
+        int i = 0, j = 0;
+
+        while (i < m || j < n) {
+            if (i <= j && i<m) {
+                result.push_back(word1[i++]);
+            }
+            else if (j < i || j>=m) {
+                result.push_back(word2[j++]);
+            }
+        }
+
+        return result;
+    }
+
     int main(){
         // string s;
         // getline(cin, s);
@@ -127,10 +150,19 @@ bool isVowel(char ch) {
         // reverseEachWord(input);
         // cout<<input;
 
-        string s;
-        getline(cin, s);
-        string sorted=sortVowels(s);
-        cout<<sorted;
+        // string s;
+        // getline(cin, s);
+        // string sorted=sortVowels(s);
+        // cout<<sorted;
+
+        string word1;
+        string word2;
+        cout<<"Enter Word 1: ";
+        cin>>word1;
+        cout<<"Enter Word 2: ";
+        cin>>word2;
+        string mix=mergeAlternately(word1,word2);
+        cout<<mix;
 
         return 0;
     }
