@@ -34,14 +34,43 @@ int mystoi(string s) {
         return ths[num/1000] + hrns[(num%1000)/100] + tens[(num%100)/10] + ones[(num%10)];
 }
 
+string addBinary(string a, string b) {
+    string ans;
+    int carry = 0;
+    int i = a.length() - 1;
+    int j = b.length() - 1;
+
+    while (i >= 0 || j >= 0 || carry) {
+      if (i >= 0)
+        carry += a[i--] - '0';
+      if (j >= 0)
+        carry += b[j--] - '0';
+      ans += carry % 2 + '0';
+      carry /= 2;
+    }
+
+    reverse(begin(ans), end(ans));
+    return ans;
+  }
+
     int main(){
         // string s;
         // getline(cin, s);
         // int converted=mystoi(s);
         // cout<<converted;
-        int num;
-        cin>>num;
-        string roman=intToRoman(num);
-        cout<<roman;
+
+        // int num;
+        // cin>>num;
+        // string roman=intToRoman(num);
+        // cout<<roman;
+        
+        string a;
+        string b;
+        cout<<"Enter Number 1: ";
+        cin>>a;
+        cout<<"Enter Number 2: ";
+        cin>>b;
+        string add=addBinary(a,b);
+        cout<<add;
         return 0;
     }
