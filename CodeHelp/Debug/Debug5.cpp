@@ -8,9 +8,9 @@ using namespace std;
 
 int mystoi(string s) {
         int len = s.size();
-        double num = 0;
+        int num = 0;
         int i=0;
-        while(s[i] == ' '){
+        while(i<len && s[i] == ' '){
             i++;
         }
         bool negative = s[i] == '-';
@@ -24,9 +24,24 @@ int mystoi(string s) {
         num = (num < INT_MIN) ? INT_MIN : num;
         return int(num);
     }
+
+    string intToRoman(int num) {
+        string ones[] = {"","I","II","III","IV","V","VI","VII","VIII","IX"};
+        string tens[] = {"","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"};
+        string hrns[] = {"","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"};
+        string ths[] = {"","M","MM"};
+        
+        return ths[num/1000] + hrns[(num%1000)/100] + tens[(num%100)/10] + ones[(num%10)];
+}
+
     int main(){
-        string s= "Ayush";
-        int converted=mystoi(s);
-        cout<<converted;
+        // string s;
+        // getline(cin, s);
+        // int converted=mystoi(s);
+        // cout<<converted;
+        int num;
+        cin>>num;
+        string roman=intToRoman(num);
+        cout<<roman;
         return 0;
     }
