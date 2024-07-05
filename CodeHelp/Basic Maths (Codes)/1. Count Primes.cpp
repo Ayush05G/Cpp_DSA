@@ -1,3 +1,6 @@
+#include <cmath>
+#include <vector>
+using namespace std;
 // M1
 class Solution
 {
@@ -34,7 +37,8 @@ public:
     {
         if (n <= 1)
             return false;
-        for (int i = 2; i * i <= n; i++)
+            int Sqrtn = sqrt(n);
+        for (int i = 2; i * i <= Sqrtn; i++)
         {
             if (n % i == 0)
                 return false;
