@@ -11,12 +11,12 @@ int fastExponentiation(int x, int n)
         if (n & 1)
         {
             // n is odd.
-            ans = (ans * x) % M;
+            ans = (ans * x) ;
         }
-        x = (x * x) % M;
+        x = (x * x);
         n >>= 1;
     }
-    return ans % M;
+    return ans;
 }
 
 int slowExponentiation(int a, int b)
