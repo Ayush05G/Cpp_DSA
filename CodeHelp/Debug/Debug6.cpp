@@ -1,14 +1,18 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
-bool isPrime(int n)
+void SieveOfEratosthenes(int n) 
 {
-    if (n <= 1)
-        return false;
- 
-    for (int i = 2; i <= n / 2; i++)
-       { if (n % i==0)
-            return false;
- }
-    return true;
+    vector<bool> prime(n+1, true);
+  
+    for (int p = 2; p * p <= n; p++) {
+            for (int i = p * p; i <= n; i += p) 
+                prime[i] = false; 
+        } 
+
+  
+    for (int p = 2; p <= n; p++) 
+        if (prime[p]) 
+            cout << p << " "; 
 }
