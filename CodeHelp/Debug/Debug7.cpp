@@ -23,6 +23,28 @@ bool isPowerOfFour(int n) {
        return n<0 ? 1/ans : ans;    
     }
 
+    int returnPermutations(string input, string output[]){
+    int count = 0;
+    string created;
+    for(int i=0;input[i]!='\0' && input.length()>1;i++){
+        char ch = input[i];
+        int start = count;
+        created = input.substr(0,i) + input.substr(i+1);
+        count = count + returnPermutations(created,output+count);
+        for(int k=start;k<count;k++){
+            output[k] = ch + output[k];
+        }
+    }
+    if(input.length()==1){
+        for(int k=0;input[k] !='\0';k++){
+            output[count] = output[count] + input[k];
+            count++;
+        }
+    }
+    
+    return count;
+}
+
     void removeConsecutiveDuplicates(char *input) {
 	if(input[0] == '\0'){
         return;
@@ -67,11 +89,19 @@ int main(){
     // cin>>x>>n;
     // cout<<myPow(x,n);
 
-    char input[100];
-    cin.getline(input, 100);
-    // removeConsecutiveDuplicates(input);
-    removeX(input);
-    cout << input << endl;
+    string input;
+    cin>>input;
+    string output[1000];
+    int count = returnPermutations(input,output);
+    for(int i=0;i<count;i++){
+        cout<<output[i]<<endl;
+    }
+
+    // char input[100];
+    // cin.getline(input, 100);
+    // // removeConsecutiveDuplicates(input);
+    // removeX(input);
+    // cout << input << endl;
 
     return 0;
 }
