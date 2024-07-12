@@ -39,6 +39,24 @@ bool isPowerOfFour(int n) {
     removeConsecutiveDuplicates(input+1);
 }
 
+void shift(char input[]){
+    int i =1;
+    for(i=1;input[i]!='\0';i++)
+        input[i-1] = input[i];
+    input[i-1] = '\0';
+}
+void removeX(char input[]) {
+    if(input[0]=='\0'){
+        return;
+    }
+    if(input[0]=='x'){
+        shift(input);
+    	removeX(input);
+    }
+    else
+    removeX(input+1);
+}
+
 int main(){
     // int n;
     // cin>>n;
@@ -51,7 +69,8 @@ int main(){
 
     char input[100];
     cin.getline(input, 100);
-    removeConsecutiveDuplicates(input);
+    // removeConsecutiveDuplicates(input);
+    removeX(input);
     cout << input << endl;
 
     return 0;
