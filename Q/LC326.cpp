@@ -8,7 +8,7 @@ public:
         return true; // 3^0 = 1
     }
     if (n % 3 != 0) {
-        return false; // Odd numbers greater than 1 are not powers of three
+        return false; // Even numbers greater than 1 are not powers of three
     }
     return isPowerOfThree(n / 3);
 }
