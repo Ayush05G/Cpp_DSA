@@ -17,7 +17,7 @@ class Solution {
   }
 };
 
-//Second Approach
+//Second Approach(Wrong as in this approach while placing nums2[j] in main while loop we are changing nums1[k] along with nums1[i] which is wrong)
 class Solution {
 public:
     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
