@@ -66,6 +66,40 @@ int ceilSearch(int arr[], int low, int high, int x) {
 	}
 }
 
+void print(bool** visited, int n){
+    for(int i=0; i<n; i++){
+        for(int j=0; j<n; j++){
+            cout << visited[i][j] << " ";
+        }
+    }
+    cout << endl;
+}
+
+void solve(int maze[][20], bool** visited, int row, int col, int n){
+    if(row>=n || col>=n || row < 0 || col < 0) return; 
+    if(!(!visited[row][col] && maze[row][col])) return;
+    visited[row][col] = true;
+    if(row==n-1 && col == n-1){
+        print(visited, n);
+    }
+    solve(maze,visited,row,col+1,n);
+    solve(maze,visited,row,col-1,n);
+    solve(maze,visited,row+1,col,n);
+    solve(maze,visited,row-1,col,n);
+    visited[row][col] = false;
+}
+
+void ratInAMaze(int maze[][20], int n){
+	bool** visited = new bool*[n];
+    for(int i=0; i<n; i++){
+        visited[i] = new bool[n];
+        for(int j=0; j<n; j++){
+            visited[i][j] = false;
+        }
+    }
+    solve(maze, visited, 0, 0, n);
+}
+
 int power(int x, int n){
     if(n == 0) return 1;
     if(x == 0) return 0;
@@ -78,13 +112,13 @@ int power(int x, int n){
 }
 
 int main() {
-    int arr[] = {12, 11, 13, 5, 6, 7};
-    int n = sizeof(arr)/sizeof(arr[0]);
-    merge_sort(arr, 0, n-1);
-    for (int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
+    // int arr[] = {12, 11, 13, 5, 6, 7};
+    // int n = sizeof(arr)/sizeof(arr[0]);
+    // merge_sort(arr, 0, n-1);
+    // for (int i = 0; i < n; i++) {
+    //     cout << arr[i] << " ";
+    // }
+    // cout << endl;
 
     // int arr[] = {1, 2, 8, 10, 10, 12, 19};
     // int n = sizeof(arr)/sizeof(arr[0]);
@@ -95,6 +129,12 @@ int main() {
     // } else{
     //     cout << "Ceil of " << x << " is " <<index<< endl;
     // }
+
+    int maze[20][20] = {{1, 0, 0, 0},
+                        {1, 1, 0, 1},
+                        {0, 1, 0, 0},
+                        {1, 1, 1, 1}};
+    ratInAMaze(maze, 4);
 
     // int result=power(2, 3);
     // cout << result << endl;
