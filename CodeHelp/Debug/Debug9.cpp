@@ -1,25 +1,24 @@
 #include <iostream>
 using namespace std;
 
-class Shape {
+class A {
 public:
-    Shape(int s) : sides(s) {}
-    virtual void draw() { cout << "Drawing a shape with " << sides << " sides." << endl; }
-private:
-    int sides;
+    virtual void display() { cout << "A" << endl; }
 };
 
-class Circle : public Shape {
+class B : public A {
 public:
-    Circle(int r) : Shape(0), radius(r) {}
-//     void draw() { cout << "Drawing a circle with radius " << radius << "." << endl; }
-private:
-    int radius;
+    void display() { cout << "B" << endl; }
+};
+
+class C : public B {
+public:
+    void display() { cout << "C" << endl; }
 };
 
 int main() {
-    Shape* s = new Circle(5);
-    s->draw();
-    delete s;
+    A* ptr = new C;
+    ptr->display();
+    delete ptr;
     return 0;
 }
