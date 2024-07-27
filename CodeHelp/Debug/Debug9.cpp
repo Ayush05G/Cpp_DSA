@@ -1,24 +1,26 @@
 #include <iostream>
 using namespace std;
 
-class Parent {
+class Base {
 public:
-    Parent(int x) : value(x) {}
-    void display() { cout << "Parent: " << value << endl; }
+    Base(int x) : value(x) {}
+    void display() { cout << "Base: " << value << endl; }
 private:
     int value;
 };
 
-class Child : public Parent {
+class Derived : public Base {
 public:
-    Child(int y) : Parent(y) {}
-//     void display() { cout << "Child: " << value << endl; }
+    Derived(int y) : Base(y) {}
+//     void show() { cout << "Derived: " << value << endl; }
 // private:
 //     int value;
 };
 
 int main() {
-    Child child(10);
-    child.display();
+    Base* ptr = new Derived(10);
+    ptr->display();
+    // ptr->show();
+    delete ptr;
     return 0;
 }
