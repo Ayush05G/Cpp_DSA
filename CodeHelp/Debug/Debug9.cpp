@@ -1,26 +1,25 @@
 #include <iostream>
 using namespace std;
 
-class Base {
+class Shape {
 public:
-    Base(int x) : value(x) {}
-    void display() { cout << "Base: " << value << endl; }
+    Shape(int s) : sides(s) {}
+    virtual void draw() { cout << "Drawing a shape with " << sides << " sides." << endl; }
 private:
-    int value;
+    int sides;
 };
 
-class Derived : public Base {
+class Circle : public Shape {
 public:
-    Derived(int y) : Base(y) {}
-//     void show() { cout << "Derived: " << value << endl; }
-// private:
-//     int value;
+    Circle(int r) : Shape(0), radius(r) {}
+//     void draw() { cout << "Drawing a circle with radius " << radius << "." << endl; }
+private:
+    int radius;
 };
 
 int main() {
-    Base* ptr = new Derived(10);
-    ptr->display();
-    // ptr->show();
-    delete ptr;
+    Shape* s = new Circle(5);
+    s->draw();
+    delete s;
     return 0;
 }
