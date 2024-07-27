@@ -1,24 +1,19 @@
 #include <iostream>
 using namespace std;
 
-class A {
+class Animal {
 public:
-    virtual void display() { cout << "A" << endl; }
+    virtual void speak() { cout << "Animal speaks" << endl; }
 };
 
-class B : public A {
+class Dog : public Animal {
 public:
-    void display() { cout << "B" << endl; }
-};
-
-class C : public B {
-public:
-    void display() { cout << "C" << endl; }
+    void speak() { cout << "Dog barks" << endl; }
 };
 
 int main() {
-    A* ptr = new C;
-    ptr->display();
-    delete ptr;
+    Animal* a = new Dog;
+    a->speak();
+    delete a;
     return 0;
 }
