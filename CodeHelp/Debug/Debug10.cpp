@@ -6,20 +6,28 @@ class Node {
     Node* next;
 };
 
-bool hasCycle(Node* head) {
-    Node* slow = head;
-    Node* fast = head;
+Node* reverseList(Node* head) {
+    Node* prev = nullptr;
+    Node* current = head;
+    Node* nextNode = nullptr;
 
-   while (fast != nullptr && fast->next != nullptr) {
-        slow = slow->next;
-        fast = fast->next->next;
-
-        if (slow == fast) {
-            return true;
-        }
+    while (current != nullptr) {
+        nextNode = current->next;
+        current->next = prev;
+        prev = current;
+        current = nextNode;
     }
 
-    return false;
+    head = prev;
+    return head;
+}
+
+void printList(Node* head) {
+    while (head != nullptr) {
+        std::cout << head->data << " ";
+        head = head->next;
+    }
+    std::cout << std::endl;
 }
 
 int main() {
@@ -32,17 +40,13 @@ int main() {
         head = newNode;
     }
 
-    // Creating a cycle by linking the last node to the second node
-    Node* lastNode = head;
-    while (lastNode->next != nullptr) {
-        lastNode = lastNode->next;
-    }
+    std::cout << "Original Linked List: ";
+    printList(head);
 
-    if (hasCycle(head)) {
-        std::cout << "Linked List has a cycle." << std::endl;
-    } else {
-        std::cout << "Linked List does not have a cycle." << std::endl;
-    }
+    head = reverseList(head);
+
+    std::cout << "Reversed Linked List: ";
+    printList(head);
 
     return 0;
 }
