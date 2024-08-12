@@ -1,25 +1,21 @@
 #include <iostream>
 
 class Node {
-    public:
+		public:
     int data;
     Node* next;
 };
 
-Node* reverseList(Node* head) {
-    Node* prev = nullptr;
-    Node* current = head;
-    Node* nextNode = nullptr;
+Node* findMiddle(Node* head) {
+    Node* slow = head;
+    Node* fast = head;
 
-    while (current != nullptr) {
-        nextNode = current->next;
-        current->next = prev;
-        prev = current;
-        current = nextNode;
+    while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
     }
 
-    head = prev;
-    return head;
+    return slow;
 }
 
 void printList(Node* head) {
@@ -40,13 +36,9 @@ int main() {
         head = newNode;
     }
 
-    std::cout << "Original Linked List: ";
-    printList(head);
+    Node* middleNode = findMiddle(head);
 
-    head = reverseList(head);
-
-    std::cout << "Reversed Linked List: ";
-    printList(head);
+    std::cout << "Middle Node: " << middleNode->data << std::endl;
 
     return 0;
 }
