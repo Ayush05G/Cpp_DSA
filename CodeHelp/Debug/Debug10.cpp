@@ -6,22 +6,20 @@ class Node {
     Node* next;
 };
 
-void deleteNode(Node* nodeToDelete) {
-    if (nodeToDelete == nullptr || nodeToDelete->next == nullptr) {
-        return;
-    }
-    Node* temp = nodeToDelete->next;
-    nodeToDelete->data = temp->data;
-    nodeToDelete->next = temp->next;
-    delete temp;
-}
+bool hasCycle(Node* head) {
+    Node* slow = head;
+    Node* fast = head;
 
-void printList(Node* head) {
-    while (head != nullptr) {
-        std::cout << head->data << " ";
-        head = head->next;
+   while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast) {
+            return true;
+        }
     }
-    std::cout << std::endl;
+
+    return false;
 }
 
 int main() {
@@ -34,12 +32,17 @@ int main() {
         head = newNode;
     }
 
-    // Deleting the node with data 3
-    Node* toDelete = head->next->next;
-    deleteNode(toDelete);
+    // Creating a cycle by linking the last node to the second node
+    Node* lastNode = head;
+    while (lastNode->next != nullptr) {
+        lastNode = lastNode->next;
+    }
 
-    std::cout << "Linked List after deletion: ";
-    printList(head);
+    if (hasCycle(head)) {
+        std::cout << "Linked List has a cycle." << std::endl;
+    } else {
+        std::cout << "Linked List does not have a cycle." << std::endl;
+    }
 
     return 0;
 }
