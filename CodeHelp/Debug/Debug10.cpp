@@ -6,27 +6,39 @@ class Node {
     Node* next;
 };
 
+void deleteNode(Node* nodeToDelete) {
+    if (nodeToDelete == nullptr || nodeToDelete->next == nullptr) {
+        return;
+    }
+    Node* temp = nodeToDelete->next;
+    nodeToDelete->data = temp->data;
+    nodeToDelete->next = temp->next;
+    delete temp;
+}
+
 void printList(Node* head) {
     while (head != nullptr) {
         std::cout << head->data << " ";
         head = head->next;
     }
+    std::cout << std::endl;
 }
 
 int main() {
-    Node* head = new Node();
-    Node* second = new Node();
-    Node* third = new Node();
+    Node* head = nullptr;
 
-    head->data = 1;
-    head->next = second;
+    for (int i = 1; i <= 5; i++) {
+        Node* newNode = new Node;
+        newNode->data = i;
+        newNode->next = head;
+        head = newNode;
+    }
 
-    second->data = 2;
-    second->next = third;
+    // Deleting the node with data 3
+    Node* toDelete = head->next->next;
+    deleteNode(toDelete);
 
-    third->data = 3;
-    third->next = nullptr;
-
+    std::cout << "Linked List after deletion: ";
     printList(head);
 
     return 0;
