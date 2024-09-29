@@ -3,12 +3,12 @@
 #include <vector>
 using namespace std;
 
-vector<int> nextGreaterElement(const vector<int>& nums) {
+vector<int> nextSmallerElement(const vector<int>& nums) {
     stack<int> s;
     vector<int> result(nums.size(), -1);
 
     for (int i = 0; i < nums.size(); ++i) {
-        while (!s.empty() && nums[i] > nums[s.top()]) {
+        while (!s.empty() && nums[i] < nums[s.top()]) {
             result[s.top()] = nums[i];
             s.pop();
         }
@@ -19,8 +19,8 @@ vector<int> nextGreaterElement(const vector<int>& nums) {
 }
 
 int main() {
-    vector<int> nums = {2, 1, 3, 4, 5};
-    vector<int> result = nextGreaterElement(nums);
+    vector<int> nums = {5, 4, 3, 2, 1};
+    vector<int> result = nextSmallerElement(nums);
     for (int num : result)
         cout << num << " ";
     return 0;
