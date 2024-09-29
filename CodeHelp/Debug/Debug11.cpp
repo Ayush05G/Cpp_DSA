@@ -1,49 +1,27 @@
 #include <iostream>
+#include <stack>
+#include <vector>
 using namespace std;
 
-class Node {
-public:
-    int data;
-    Node* next;
-};
+vector<int> nextGreaterElement(const vector<int>& nums) {
+    stack<int> s;
+    vector<int> result(nums.size(), -1);
 
-class Stack {
-public:
-    Stack() {
-        top = nullptr;
-    }
-
-    void push(int value) {
-        Node* newNode = new Node;
-        newNode->data = value;
-        newNode->next = top;
-        top = newNode;
-        
-    }
-
-    int pop() {
-        if (top == nullptr) {
-            cout << "Stack Underflow";
-            return -1;
+    for (int i = 0; i < nums.size(); ++i) {
+        while (!s.empty() && nums[i] > nums[s.top()]) {
+            result[s.top()] = nums[i];
+            s.pop();
         }
-        int value = top->data;
-        cout << value << endl;
-        Node* temp = top;
-        top = top->next;
-        delete temp;
-        return value;
+        s.push(i);
     }
 
-private:
-    Node* top;
-};
+    return result;
+}
 
 int main() {
-    Stack myStack;
-    myStack.push(1);
-    myStack.push(2);
-    myStack.push(3);
-    myStack.pop();
-    myStack.pop();
+    vector<int> nums = {2, 1, 3, 4, 5};
+    vector<int> result = nextGreaterElement(nums);
+    for (int num : result)
+        cout << num << " ";
     return 0;
 }
