@@ -3,37 +3,46 @@
 #include <vector>
 using namespace std;
 
-void insert_at_bottom(stack<int>& st, int x) {
-	if (st.size() == 0) {
-		st.push(x);
-	}
-	else {
-		int a = st.top();
-		st.pop();
-		insert_at_bottom(st, x);
-		st.push(a);
-	}
+int prec(char c) {
+    if (c == '^')
+        return 3;
+    else if (c == '/' || c == '*')
+		return 2;
+	else if (c == '+' || c == '-')
+		return 1;
+    else
+        return -1;
 }
-void reverse(stack<int>& st) {
-	if (st.size() > 0) {
-		int x = st.top();
-		st.pop();
-		reverse(st);
-		insert_at_bottom(st, x);
+void infixToPostfix(string s) {
+	stack<char> st;
+	string result;
+	for (int i = 0; i < s.length(); i++) {
+		char c = s[i];
+		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+			|| (c >= '0' && c <= '9'))
+			result += c;
+		else if (c == '(')
+			st.push('(');
+		else if (c == ')') {
+			while (st.top() != '(') {
+				result += st.top();
+				st.pop();
+			}
+			st.pop();
+		}
+		else {
+			while (!st.empty()
+				&& prec(s[i]) < prec(st.top())) {
+				result += st.top();
+				st.pop();
+			}
+			st.push(c);
+		}
 	}
-	return;
+	cout << result << endl;
 }
 int main() {
-    stack<int> st;
-    st.push(1);
-    st.push(2);
-    st.push(3);
-    st.push(4);
-    st.push(5);
-    reverse(st);
-    while (!st.empty()) {
-        cout << st.top() << " ";
-        st.pop();
-    }
+    string s = "a+b*(c^d-e)^(f+g*h)-i";
+    infixToPostfix(s);
     return 0;
 }
