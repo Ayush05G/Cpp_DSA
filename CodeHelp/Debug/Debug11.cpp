@@ -3,25 +3,37 @@
 #include <vector>
 using namespace std;
 
-vector<int> nextSmallerElement(const vector<int>& nums) {
-    stack<int> s;
-    vector<int> result(nums.size(), -1);
-
-    for (int i = 0; i < nums.size(); ++i) {
-        while (!s.empty() && nums[i] < nums[s.top()]) {
-            result[s.top()] = nums[i];
-            s.pop();
-        }
-        s.push(i);
-    }
-
-    return result;
+void insert_at_bottom(stack<int>& st, int x) {
+	if (st.size() == 0) {
+		st.push(x);
+	}
+	else {
+		int a = st.top();
+		st.pop();
+		insert_at_bottom(st, x);
+		st.push(a);
+	}
 }
-
+void reverse(stack<int>& st) {
+	if (st.size() > 0) {
+		int x = st.top();
+		st.pop();
+		reverse(st);
+		insert_at_bottom(st, x);
+	}
+	return;
+}
 int main() {
-    vector<int> nums = {5, 4, 3, 2, 1};
-    vector<int> result = nextSmallerElement(nums);
-    for (int num : result)
-        cout << num << " ";
+    stack<int> st;
+    st.push(1);
+    st.push(2);
+    st.push(3);
+    st.push(4);
+    st.push(5);
+    reverse(st);
+    while (!st.empty()) {
+        cout << st.top() << " ";
+        st.pop();
+    }
     return 0;
 }
