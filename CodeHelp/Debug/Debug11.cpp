@@ -1,39 +1,49 @@
 #include <iostream>
 using namespace std;
 
+class Node {
+public:
+    int data;
+    Node* next;
+};
+
 class Stack {
 public:
-    Stack(int capacity) {
-        top = -1;
-        size = capacity;
-        arr = new int[size];
+    Stack() {
+        top = nullptr;
     }
 
     void push(int value) {
-        if (top == size - 1)
-            cout << "Stack Overflow";
-        else
-            arr[++top] = value;
+        Node* newNode = new Node;
+        newNode->data = value;
+        newNode->next = top;
+        top = newNode;
+        
     }
 
-    void pop() {
-        if (top == -1) {
+    int pop() {
+        if (top == nullptr) {
             cout << "Stack Underflow";
-            return;
+            return -1;
         }
-        cout << arr[top--] << endl;
+        int value = top->data;
+        cout << value << endl;
+        Node* temp = top;
+        top = top->next;
+        delete temp;
+        return value;
     }
 
 private:
-    int top;
-    int size;
-    int* arr;
+    Node* top;
 };
 
 int main() {
-    Stack myStack(5);
+    Stack myStack;
     myStack.push(1);
     myStack.push(2);
+    myStack.push(3);
+    myStack.pop();
     myStack.pop();
     return 0;
 }
