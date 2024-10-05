@@ -1,77 +1,40 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-class MyCircularQueue {
-    int* arr;
-    int qfront;
-    int rear;
-    int size;
-public:
-    MyCircularQueue(int n) {
-        arr = new int[n];
-        rear = 0;
-        qfront = 0;
-        size = n;
-    }
-    
-    bool enQueue(int value) {
-        if (isFull()) {
-            return false;
-        }
-        if (isEmpty()) {
-            qfront = rear = 0;
-        } else {
-            rear = (rear + 1) % size;
-        }
-        arr[rear] = value;
-        return true;
-    }
-    
-    bool deQueue() {
-        if (isEmpty()) {
-            return false;
-        }
-        if (qfront == rear) {
-            qfront = rear = -1;
-        } else {
-            qfront = (qfront + 1) % size;
-        }
-        return true;
-    }
-    
-    int Front() {
-        if (isEmpty()) {
-            return -1;
-        }
-        return arr[qfront];
-    }
-    
-    int Rear() {
-        if (isEmpty()) {
-            return -1;
-        }
-        return arr[rear];
-    }
-    
-    bool isEmpty() {
-        return qfront == -1;
-    }
-    
-    bool isFull() {
-        return (qfront == 0 && rear == size - 1) || (qfront == rear + 1);
-    }
-};
 
+int maxSubarraySumCircular(vector<int>& nums) {
+        const int n = nums.size();
+        vector<int> rightMax(n);
+        rightMax[n - 1] = nums[n - 1];
+        int suffixSum = nums[n - 1];
+
+        for (int i = n - 2; i >= 0; --i) {
+            suffixSum += nums[i];
+            rightMax[i] = max(rightMax[i + 1], suffixSum);
+        }
+
+        int maxSum = nums[0];
+        int specialSum = nums[0];
+        int curMax = 0;
+        int prefixSum = 0;
+        for (int i = 0; i < n; ++i) {
+            // This is Kadane's algorithm.
+            curMax = max(curMax, 0) + nums[i];
+            maxSum = max(maxSum, curMax);
+
+            prefixSum += nums[i];
+            if (i + 1 < n) {
+                specialSum = max(specialSum, prefixSum + rightMax[i + 1]);
+            }
+        }
+
+        return max(maxSum, specialSum);
+    }
+     
 int main() {
-    MyCircularQueue* obj = new MyCircularQueue(3);
-    cout << obj->enQueue(1) << endl;
-    cout << obj->enQueue(2) << endl;
-    cout << obj->enQueue(3) << endl;
-    cout << obj->enQueue(4) << endl;
-    cout << obj->Rear() << endl;
-    cout << obj->isFull() << endl;
-    cout << obj->deQueue() << endl;
-    cout << obj->enQueue(4) << endl;
-    cout << obj->Rear() << endl;
+    vector<int> nums = {1, -2, 3, -2};
+    cout << maxSubarraySumCircular(nums) << endl;
     return 0;
 }
