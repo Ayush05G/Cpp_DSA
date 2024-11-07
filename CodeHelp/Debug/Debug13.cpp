@@ -1,15 +1,7 @@
-void flatten(TreeNode* root) {
-        if (!root) return;
-        stack<TreeNode*> s;
-        while (!s.empty())
-        {
-            TreeNode* cur = s.top();
-            s.pop();
-
-            if (cur->right) s.push(cur->right);
-            if (cur->left) s.push(cur->left);
-            if (!s.empty()) cur->right = s.top();
-            cur->left = nullptr;
-        }
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (!root || root == p || root == q) return root;
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+        return !left ? right : !right ? left : root;
     }
 
