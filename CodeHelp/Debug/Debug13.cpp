@@ -1,7 +1,12 @@
-TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if (!root || root == p || root == q) return root;
-        TreeNode* left = lowestCommonAncestor(root->left, p, q);
-        TreeNode* right = lowestCommonAncestor(root->right, p, q);
-        return !left ? right : !right ? left : root;
+bool isBalanced(TreeNode* root) {
+        if (root == NULL)  return true;
+		if (Height(root) == -1)  return false;
+		return true;
+	}
+	int Height(TreeNode* root) {
+		if (root == NULL)  return 0;
+		int leftHeight = Height(root->left);
+		int rightHight = Height(root->right);
+		if (leftHeight == -1 || rightHight == -1 || abs(leftHeight - rightHight) > 1)  return -1;
+		return max(leftHeight, rightHight) + 1;
     }
-
