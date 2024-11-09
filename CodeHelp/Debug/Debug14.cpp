@@ -9,32 +9,31 @@ struct TreeNode {
     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
-void inorder(TreeNode* cur, TreeNode*& prev, TreeNode*& first, TreeNode*& sec) {
-    if (!cur) { return; }
-    inorder(cur->left, prev, first, sec);
-    if (prev != NULL && cur->val < prev->val) {
-        if (!first) { first = prev; }
-        sec = cur;
-    }
-    prev = cur;
-    inorder(cur->right, prev, first, sec);
-}
+bool hasPathSum(TreeNode* root, int &targetSum) {
+        if(!root)   return false;
 
-void recoverTree(TreeNode* root) {
-    TreeNode* prev = nullptr;
-    TreeNode* first = nullptr;
-    TreeNode* sec = nullptr;
-    inorder(root, prev, first, sec);
-    int temp = first->val;
-    first->val = sec->val;
-    sec->val = temp;
-}
+        targetSum -= root->val;
+        if(targetSum == 0 && !root->left && !root->right) return true;
+
+        bool leftPath = hasPathSum(root->left, targetSum);
+        bool rightPath = hasPathSum(root->right, targetSum);
+        targetSum += root->val;
+
+        return leftPath || rightPath;
+    }
 
 int main(){
-    // Create a tree
-    TreeNode* root = new TreeNode(1);
-    root->left = new TreeNode(3);
-    root->left->right = new TreeNode(2);
-    recoverTree(root);
+    TreeNode* root = new TreeNode(5);
+    root->left = new TreeNode(4);
+    root->right = new TreeNode(8);
+    root->left->left = new TreeNode(11);
+    root->left->left->left = new TreeNode(7);
+    root->left->left->right = new TreeNode(2);
+    root->right->left = new TreeNode(13);
+    root->right->right = new TreeNode(4);
+    root->right->right->right = new TreeNode(1);
+
+    int targetSum = 22;
+    cout << hasPathSum(root, targetSum) << endl;
     return 0;
 }
