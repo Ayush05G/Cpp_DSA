@@ -9,31 +9,20 @@ struct TreeNode {
     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
-bool hasPathSum(TreeNode* root, int &targetSum) {
-        if(!root)   return false;
-
-        targetSum -= root->val;
-        if(targetSum == 0 && !root->left && !root->right) return true;
-
-        bool leftPath = hasPathSum(root->left, targetSum);
-        bool rightPath = hasPathSum(root->right, targetSum);
-        targetSum += root->val;
-
-        return leftPath || rightPath;
-    }
+TreeNode* sortedArrayToBST(vector<int>& nums) {
+         if(nums.size()==0)return NULL;
+         if(nums.size()==1) return new TreeNode(nums[0]);
+         int middle = nums.size()/2;
+         TreeNode* root = new TreeNode(nums[middle]);
+         vector<int> leftsub(nums.begin(), nums.begin()+middle);
+         vector<int> rightsub(nums.begin()+ middle+1, nums.end());
+         root->left = sortedArrayToBST(leftsub);
+         root->right = sortedArrayToBST(rightsub);
+         return root;
+     }
 
 int main(){
-    TreeNode* root = new TreeNode(5);
-    root->left = new TreeNode(4);
-    root->right = new TreeNode(8);
-    root->left->left = new TreeNode(11);
-    root->left->left->left = new TreeNode(7);
-    root->left->left->right = new TreeNode(2);
-    root->right->left = new TreeNode(13);
-    root->right->right = new TreeNode(4);
-    root->right->right->right = new TreeNode(1);
-
-    int targetSum = 22;
-    cout << hasPathSum(root, targetSum) << endl;
+    vector<int> nums = {-10,-3,0,5,9};
+    TreeNode* root = sortedArrayToBST(nums);
     return 0;
 }
