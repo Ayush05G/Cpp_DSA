@@ -1,33 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<int> topKFrequent(vector<int>& nums, int k) {
-    unordered_map<int,int>m;
-        for(int i=0;i<nums.size();i++){
-            m[nums[i]]++;
-        }
-    unordered_map<int,int>::iterator it=m.begin();
-    priority_queue<pair<int,int>>pq;
-        for(;it!=m.end();it++){
-            pq.push(make_pair(it->second, it->first));
-        }
-        vector<int>ans;
-        int a=0;
-        while(a<k){
-            ans.push_back(pq.top().second);
-            pq.pop();
-            a++;
-        }
-        return ans;
-    }
+void kthSmallest(vector<int>& v, int N, int K)
+{
+	priority_queue<int> heap1;
+	for (int i = 0; i < N; ++i) {
+		heap1.push(v[i]);
+		if (heap1.size() > K) {
+			heap1.pop();
+		}
+	}
+	cout << heap1.top() << endl;
+}
 
 int main()
 {
-    vector<int> nums = {1,1,1,2,2,3};
-    int k = 2;
-    vector<int> ans = topKFrequent(nums, k);
-    for(int i=0;i<ans.size();i++){
-        cout<<ans[i]<<" ";
-    }
+    int N = 6, K = 3;
+    vector<int> v = {7, 10, 4, 3, 20, 15};
+    kthSmallest(v, N, K);
     return 0;
 }
