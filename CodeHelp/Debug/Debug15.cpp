@@ -1,66 +1,35 @@
-/*Median of Stream of Running Integers using STL*/
-
 #include <bits/stdc++.h>
 using namespace std;
 
-void printMedians(double arr[], int n)
+/*k closest points to the origin using a priority queue*/
+vector<pair<int, int>> kClosestPoints(vector<pair<int, int>> points, int n, int k)
 {
-	priority_queue<double> s;
-	priority_queue<double,vector<double>,greater<double> > g;
-	double med = arr[0];
-	s.push(arr[0]);
-	cout << med << endl;
-	for (int i=1; i < n; i++)
-	{
-		double x = arr[i];
-		if (s.size() > g.size())
-		{
-			if (x < med)
-			{
-				g.push(s.top());
-				s.pop();
-				s.push(x);
-			}
-			else
-				g.push(x);
+    vector<pair<int, int>> ans;
+    priority_queue<int, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> p;
 
-			med = (s.top() + g.top())/2.0;
-		}
-		else if (s.size()!=g.size())
-		{
-			if (x < med)
-			{
-				s.push(x);
-				med = (double)s.top();
-			}
-			else
-			{
-				g.push(x);
-				med = (double)g.top();
-			}
-		}
-		else
-		{
-			if (x > med)
-			{
-				s.push(g.top());
-				g.pop();
-				g.push(x);
-			}
-			else
-				s.push(x);
-
-			med = (s.top() + g.top())/2.0;
-		}
-
-		cout << med << endl;
-	}
+    for (int i = 0; i < n; i++)
+    {
+        int distance = points[i].first * points[i].first + points[i].second * points[i].second;
+        p.push({distance, {points[i].first, points[i].second}});
+    }
+    while (k--)
+    {
+        auto x = p.top();
+        ans.push_back({x.second.first, x.second.second});
+                p.pop();
+    }
+    return ans;
 }
 
 int main()
 {
-    double arr[] = {5, 15, 10, 20, 3};
-    int n = sizeof(arr)/sizeof(arr[0]);
-    printMedians(arr, n);
+    vector<pair<int, int>> points = {{1, 3}, {-2, 2}, {5, 8}, {0, 1}};
+    int n = points.size();
+    int k = 2;
+    vector<pair<int, int>> ans = kClosestPoints(points, n, k);
+    for (auto x : ans)
+    {
+        cout << x.first << " " << x.second << endl;
+    }
     return 0;
 }
