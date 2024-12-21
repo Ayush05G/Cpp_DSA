@@ -3,39 +3,29 @@ using namespace std;
 
 
 /*
-Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
+Given an integer, convert it to a roman numeral.
+Symbol       Value
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
 */
 
-void setZeroes(vector<vector<int>>& matrix) {
-        int n = matrix.size();
-        int m = matrix[0].size();
-        unordered_set<int> setRows; 
-        unordered_set<int> setColumns; 
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                if(matrix[i][j]==0){
-                    setRows.insert(i);
-                    setColumns.insert(j);
-                }
-            }
-        }
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                if(setRows.count(i) > 0 || setColumns.count(j) > 0){
-                    matrix[i][j] = 0;
-                }
-            }
-        }
+string intToRoman(int num) {
+        string ones[] = {"","I","II","III","IV","V","VI","VII","VIII","IX"};
+        string tens[] = {"","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"};
+        string hrns[] = {"","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"};
+        string ths[] = {"","M","MM","MMM"};
+        
+        return ths[num/1000] + hrns[(num%1000)/100] + tens[(num%100)/10] + ones[num%10];
     }
 
 int main(){
-    vector<vector<int>> matrix = {{1,1,1},{1,0,1},{1,1,1}};
-    setZeroes(matrix);
-    for(int i=0; i<matrix.size(); i++){
-        for(int j=0; j<matrix[0].size(); j++){
-            cout<<matrix[i][j]<<" ";
-        }
-        cout<<endl;
-    }
+    int num;
+    cin>>num;
+    cout<<intToRoman(num)<<endl;
     return 0;
 }
