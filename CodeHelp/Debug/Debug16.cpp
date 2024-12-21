@@ -1,31 +1,51 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-
 /*
-Given an integer, convert it to a roman numeral.
-Symbol       Value
-I             1
-V             5
-X             10
-L             50
-C             100
-D             500
-M             1000
+Determine if a 9 x 9 Sudoku board is valid.
 */
 
-string intToRoman(int num) {
-        string ones[] = {"","I","II","III","IV","V","VI","VII","VIII","IX"};
-        string tens[] = {"","X","XX","XXX","XL","L","LX","LXX","LXXX","XC"};
-        string hrns[] = {"","C","CC","CCC","CD","D","DC","DCC","DCCC","CM"};
-        string ths[] = {"","M","MM","MMM"};
+bool isValidSudoku(vector<vector<char>>& board) {
+        vector<vector<int>> row(9, vector<int>(9, 0));
+        vector<vector<int>> col(9, vector<int>(9, 0));
+        vector<vector<int>> mat(9, vector<int>(9, 0));
         
-        return ths[num/1000] + hrns[(num%1000)/100] + tens[(num%100)/10] + ones[num%10];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] != '.' && (row[i][board[i][j] - '1'] == 1 || col[j][board[i][j] - '1'] == 1))
+                    return false;
+
+                if (board[i][j] != '.') {
+                    row[i][board[i][j] - '1'] = 1;
+                    col[j][board[i][j] - '1'] = 1;
+                }
+
+                int r = 3 * (i / 3) + (j / 3);
+                if (board[i][j] != '.' && mat[r][board[i][j] - '1'] == 1) {
+                    return false;
+                }
+
+                if (board[i][j] != '.') {
+                    mat[r][board[i][j] - '1'] = 1;
+                }
+            }
+        }
+        return true;
     }
 
 int main(){
-    int num;
-    cin>>num;
-    cout<<intToRoman(num)<<endl;
+    vector<vector<char>> board = {
+        {'5','3','.','.','7','.','.','.','.'},
+        {'6','.','.','1','9','5','.','.','.'},
+        {'.','9','8','.','.','.','.','6','.'},
+        {'8','.','.','.','6','.','.','.','3'},
+        {'4','.','.','8','.','3','.','.','1'},
+        {'7','.','.','.','2','.','.','.','6'},
+        {'.','6','.','.','.','.','2','8','.'},
+        {'.','.','.','4','1','9','.','.','5'},
+        {'.','.','.','.','8','.','.','7','9'}
+    };
+
+    cout << isValidSudoku(board) << endl;
     return 0;
 }
