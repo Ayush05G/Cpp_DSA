@@ -2,88 +2,94 @@
 using namespace std;
 
 /*
-A trie (pronounced as "try") or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. There are various applications of this data structure, such as autocomplete and spellchecker.
+Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.
+
+Note that the same word in the dictionary may be reused multiple times in the segmentation.
 */
-class trieNode
-{
-   public:
-   char value;
-   trieNode* children[26]; 
-   bool terminate;
 
-   trieNode(char value)
-   {
-       this->value=value;
-       for(int i=0;i<26;i++) children[i]=NULL;
-       this->terminate=false;
-   }
+class Node{
+    public:
+    
+    bool isEnd = false;
+    vector<Node*> children;
+    char ch;
+    
+    Node(char ch){
+        children.resize(26, NULL);
+        this -> ch = ch;
+    }
 };
-class Trie {
-public:
-   trieNode* root;
-    Trie() {
-        root= new trieNode('\0');
-    }
-     void insi(trieNode* root,string word)
-     {
-         if(word.length()==0)
-         {
-             root->terminate=true;
-             return ;
-         }
-         int index=word[0]-'a';
-         trieNode* temp;
-         if(root->children[index]!=NULL)
-         {
-             temp=root->children[index];
-         }
-         else
-         {
-            temp=new trieNode(word[0]);
-            root->children[index]=temp;
-            temp=root->children[index];
-         }
-         insi(temp,word.substr(1));
-     }
-    void insert(string word) {
-        insi(root,word);
-    }
-    bool siri(trieNode* root,string word)
-    {
-       if(word.length()==0) return root->terminate;
-       int index=word[0]-'a';
-       if(root->children[index]!=NULL)
-       {
-            return siri(root->children[index],word.substr(1));
-       }
-       return false;
-    }
-    bool search(string word) {
-        return siri(root,word);
-    }
-    bool pre(trieNode* root, string word)
-    {
-        if(word.length()==0) return true;
-        int index=word[0]-'a';
-        if(root->children[index]!=NULL)
-        {
-            return pre(root->children[index],word.substr(1));
+
+Node* root = new Node('#');
+
+void insert(string word) {
+    Node* rootCopy = root;
+    for(int i = 0 ; i < word.size() ; i++){
+        if(rootCopy -> children[word[i] - 'a'] == NULL){
+            Node* toAdd = new Node(word[i] - 'a');
+            rootCopy -> children[word[i] - 'a'] = toAdd;
+            rootCopy = rootCopy -> children[word[i] - 'a'];
+        }else{
+            rootCopy = rootCopy -> children[word[i] - 'a'];
         }
-        return false;
     }
-    bool startsWith(string prefix) {
-        return pre(root,prefix);
-    }
-};
+    rootCopy -> isEnd = true;
+    
+}
 
-int main()
-{
-    Trie* obj = new Trie();
-    obj->insert("apple");
-    cout<<obj->search("apple")<<endl;
-    cout<<obj->startsWith("app")<<endl;
-    cout<<obj->search("app")<<endl;
-    obj->insert("app");
-    cout<<obj->search("app")<<endl;
+bool search(string word) {
+    Node* rootCopy = root;
+    for(int i = 0 ; i < word.size() ; i++){
+        if(rootCopy -> children[word[i] - 'a'] == NULL){
+            return false;
+        }else{
+            rootCopy = rootCopy->children[word[i] - 'a'];
+        }
+    }
+    if(rootCopy->isEnd)return true;
+    return false;
+}
+
+bool startsWith(string prefix) {
+    Node* rootCopy = root;
+    for(int i = 0 ; i < prefix.size() ; i++){
+        if(rootCopy -> children[prefix[i] - 'a'] == NULL){
+            return false;
+        }else{
+            rootCopy = rootCopy->children[prefix[i] - 'a'];
+        }
+    }
+    return true;
+}
+
+unordered_map<string, bool> dp;
+bool solve(string str, Node* trie){
+    if(str.size() == 0){
+        return true;
+    }
+    if(dp.find(str) != dp.end())return dp[str];
+    
+    for(int i = 0 ; i < str.size() ; i++){
+        string prefix = str.substr(0, i + 1);
+        string suffix = str.substr(i + 1);
+        
+        if(search(prefix)){
+            if(solve(suffix, trie))
+            return dp[str] = true;
+        }
+    }
+    
+    return dp[str] = false;
+}
+
+bool wordBreak(string s, vector<string>& wordDict) {
+    for(auto word : wordDict)insert(word);        
+    return solve(s, root);
+}
+
+int main(){
+    vector<string> wordDict = {"leet", "code"};
+    string s = "leetcode";
+    cout << wordBreak(s, wordDict);
     return 0;
 }
