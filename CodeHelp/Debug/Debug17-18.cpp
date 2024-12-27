@@ -2,30 +2,43 @@
 using namespace std;
 
 /*
-Given an array of integers of size N, you have to divide it into the minimum number of ā€strictly increasing subsequences.
-Take the following example where the sequence is {1, 3, 2, 4}, then the answer would be 2. The first increasing sequence would be {1, 3, 4} and the second would be {2}.
+Ugly numbers are numbers whose only prime factors are 2, 3 or 5. Given a number n, the task is to find nâ€™th Ugly number.
 */
 
-int MinimumNumIncreasingSubsequences(int arr[], int n)
+unsigned getNthUglyNo(unsigned n)
 {
-    multiset<int> last;
-    for (int i = 0; i < n; i++) {
-        multiset<int>::iterator it = last.lower_bound(arr[i]);
-        if (it == last.begin())
-            last.insert(arr[i]);
-        else {
-            it--;
-            last.erase(it);
-            last.insert(arr[i]);
+    unsigned ugly[n]; 
+    unsigned i2 = 0, i3 = 0, i5 = 0;
+    unsigned next_multiple_of_2 = 2;
+    unsigned next_multiple_of_3 = 3;
+    unsigned next_multiple_of_5 = 5;
+    unsigned next_ugly_no = 1;
+ 
+    ugly[0] = 1;
+    for (int i = 1; i < n; i++) {
+        next_ugly_no = min(
+            next_multiple_of_2,
+            min(next_multiple_of_3, next_multiple_of_5));
+        ugly[i] = next_ugly_no;
+        if (next_ugly_no == next_multiple_of_2) {
+            i2 = i2 + 1;
+            next_multiple_of_2 = ugly[i2] * 2;
         }
-    }
-    return last.size();
+        if (next_ugly_no == next_multiple_of_3) {
+            i3 = i3 + 1;
+            next_multiple_of_3 = ugly[i3] * 3;
+        }
+        if (next_ugly_no == next_multiple_of_5) {
+            i5 = i5 + 1;
+            next_multiple_of_5 = ugly[i5] * 5;
+        }
+    }  
+    return next_ugly_no;
 }
 
 int main() 
 { 
-    int arr[] = {1, 3, 2, 4}; 
-    int n = sizeof(arr) / sizeof(arr[0]); 
-    cout << MinimumNumIncreasingSubsequences(arr, n) << endl; 
+    int n = 150; 
+    cout << getNthUglyNo(n); 
     return 0; 
 }
