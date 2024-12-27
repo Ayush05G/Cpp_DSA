@@ -1,45 +1,40 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-/*
-Given 3 strings, the task is to find the longest common sub-sequence in all three given sequences.
-*/
+int longestCommonSubsequence(string s1, string s2) {
 
-int lcsOf3( string X, string Y, string Z, int m, int n, int o) {
-    int L[m+1][n+1][o+1];
-    for (int i=0; i<=m; i++)
-    {
-        for (int j=0; j<=n; j++)
-        {
-            for (int k=0; k<=o; k++)
-            {
-                if (i == 0 || j == 0||k==0)
-                    L[i][j][k] = 0;
- 
-                else if (X[i-1] == Y[j-1] && X[i-1]==Z[k-1])
-                    L[i][j][k] = L[i-1][j-1][k-1] + 1;
- 
-                else
-                    L[i][j][k] = max(max(L[i-1][j][k],
-                                         L[i][j-1][k]),
-                                     L[i][j][k-1]);
+int n=s1.size();
+int m=s2.size();
+
+vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
+    for(int i=0;i<=n;i++){
+        dp[i][0] = 0;
+    }
+    for(int i=0;i<=m;i++){
+        dp[0][i] = 0;
+    }
+
+    for(int ind1=1;ind1<=n;ind1++){
+        for(int ind2=1;ind2<=m;ind2++){
+            if(s1[ind1-1]==s2[ind2-1])
+                dp[ind1][ind2] = 1 + dp[ind1-1][ind2-1];
+            else
+                dp[ind1][ind2] = 0 + max(dp[ind1-1][ind2],dp[ind1][ind2-1]);
             }
         }
+        return dp[n][m];
     }
-    return L[m][n][o];
+int longestPalindromeSubseq(string s) {
+
+    string s2=s;
+    reverse(s2.begin(),s2.end());
+
+    return longestCommonSubsequence(s,s2);
 }
 
 int main() 
 { 
-    string X = "AGGT12"; 
-    string Y = "12TXAYB"; 
-    string Z = "12XBA"; 
-  
-    int m = X.length(); 
-    int n = Y.length(); 
-    int o = Z.length(); 
-  
-    cout << "Length of LCS is " << lcsOf3(X, Y, Z, m, n, o); 
-  
-    return 0; 
+    string s = "bbbab";
+    cout<<longestPalindromeSubseq(s);
+    return 0;
 }
