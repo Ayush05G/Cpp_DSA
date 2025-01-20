@@ -1,26 +1,33 @@
 class Solution {
-  public:
-    vector<int> bfsOfGraph(int V, vector<int> adj[]) {
-        vector<int> output;
-        vector<bool> visited(V, false);
-        for (int i = 0; i < V; ++i) {
-            if (!visited[i]) {
-                queue<int> q;
-                visited[i] = true;
-                q.push(i);
-                while (!q.empty()) {
-                    int g_node = q.front();
-                    q.pop();
-                    output.push_back(g_node);
-                    for (auto it : adj[g_node]) {
-                        if (!visited[it]) {
-                            visited[it] = true;
-                            q.push(it);
-                        }
-                    }
+public:
+    bool dfs(int source , int destination , vector<int> adj[] , vector<int> &vis)
+    {
+        vis[source]=1;
+        if(source==destination)
+        {
+            return true;
+        }
+        for(auto a:adj[source])
+        {
+            if(!vis[a])
+            {
+                if(dfs(a,destination , adj , vis))
+                {
+                    return true;
                 }
             }
         }
-        return output;
+        return false;
+    }
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) 
+    {
+        vector<int> vis(n,0);
+        vector<int> adj[n];
+        for(int i=0;i<edges.size();i++)
+        {
+            adj[edges[i][1]].push_back(edges[i][0]); 
+            adj[edges[i][0]].push_back(edges[i][1]);            
+        }
+        return dfs(source , destination , adj , vis);
     }
 };
