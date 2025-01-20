@@ -2,50 +2,47 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Graph {
-  private:
-  vector<pair<int, edge> > G;
-  vector<pair<int, edge> > T;  // mst
-  int *parent;
-  int V;
+int findMinVertex(vector<int> &distance, vector<int> &visited, int v) {
+	int minVertex = -1;
 
-  public:
-  Graph(int V);
-  void AddWeightedEdge(int u, int v, int w);
-  int find_set(int i);
-  void union_set(int u, int v);
-  void kruskal();
-};
-Graph::Graph(int V) {
-  parent = new int[V];
-  for (int i = 0; i < V; i++)
-    parent[i] = i;
+	for(int i=0; i<v; i++) {
+		if(!visited[i] && (minVertex == -1 || distance[i] < distance[minVertex])) minVertex = i;
 
-  G.clear();
-  T.clear();
-}
-void Graph::AddWeightedEdge(int u, int v, int w) {
-  G.push_back(make_pair(w, edge(u, v)));
-}
-int Graph::find_set(int i) {
-  if (i == parent[i])
-    return i;
-  else
-    return find_set(parent[i]);
+	return minVertex;
 }
 
-void Graph::union_set(int u, int v) {
-  parent[u] = parent[v];
+void printShortestDistance(vector<vector<int>> &edges, int v){
+	vector<int> distance(v, INT_MAX);
+	vector<int> visited(v, false);
+	distance[0] = 0;
+
+	for(int i=0; i<v-1; i++) {
+		int minVertex = findMinVertex(distance, visited, v);
+		visited[minVertex] = true;
+		for(int j=0; j<v; j++){
+			if(edges[minVertex][j] != 0 && !visited[j]){
+				int dist = distance[minVertex] + edges[minVertex][j];
+				if(dist < distance[j]) {
+					distance[j] = dist;
+				}
+			}
+		}
+	}
+
+	for(int i=0; i<v; i++) cout << i << " " << distance[i] << endl;
 }
-void Graph::kruskal() {
-  int i, uRep, vRep;
-  sort(G.begin(), G.end());  // increasing weight
-  for (i = 0; i < G.size(); i++) {
-    uRep = find_set(G[i].second.first);
-    vRep = find_set(G[i].second.second);
-    if (uRep != vRep) {
-      T.push_back(G[i]);  // add to tree
-      union_set(uRep, vRep);
+
+int main() {
+    int v, e;
+    cin >> v >> e;
+    vector<vector<int>> edges(v, vector<int>(v, 0));
+    for(int i=0; i<e; i++) {
+        int f, s, w;
+        cin >> f >> s >> w;
+        edges[f][s] = w;
+        edges[s][f] = w;
     }
-  }
+
+    printShortestDistance(edges, v);
+    return 0;
 }
