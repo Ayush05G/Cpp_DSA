@@ -2,47 +2,57 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int findMinVertex(vector<int> &distance, vector<int> &visited, int v) {
-	int minVertex = -1;
+#define vertices 5
 
-	for(int i=0; i<v; i++) {
-		if(!visited[i] && (minVertex == -1 || distance[i] < distance[minVertex])) minVertex = i;
+int minimum_key(int k[], int mst[])    
+{  
+    int minimum  = INT_MAX, min,i;    
+    
+    for (i = 0; i < vertices; i++)  
+        if (mst[i] == 0 && k[i] < minimum )   
+            minimum = k[i], min = i;    
+    return min;    
+}    
 
-	return minVertex;
-}
 
-void printShortestDistance(vector<vector<int>> &edges, int v){
-	vector<int> distance(v, INT_MAX);
-	vector<int> visited(v, false);
-	distance[0] = 0;
+void prim(int g[vertices][vertices])    
+{    
 
-	for(int i=0; i<v-1; i++) {
-		int minVertex = findMinVertex(distance, visited, v);
-		visited[minVertex] = true;
-		for(int j=0; j<v; j++){
-			if(edges[minVertex][j] != 0 && !visited[j]){
-				int dist = distance[minVertex] + edges[minVertex][j];
-				if(dist < distance[j]) {
-					distance[j] = dist;
-				}
-			}
-		}
-	}
+    int parent[vertices];    
+    int k[vertices];       
+    int mst[vertices];      
+    int i, count,edge, v;
+    for (i = 0; i < vertices; i++)  
+    {  
+        k[i] = INT_MAX;  
+        mst[i] = 0;    
+    }  
+    k[0] = 0;
+    parent[0] = -1;
+    for (count = 0; count < vertices-1; count++)    
+    {    
+        edge = minimum_key(k, mst);    
+        mst[edge] = 1;    
+        for (v = 0; v < vertices; v++)    
+        {  
+            if (g[edge][v] && mst[v] == 0 && g[edge][v] <  k[v])    
+            {  
+                parent[v]  = edge, k[v] = g[edge][v];    
+            }  
+        }  
+     }    
+     printf("\n Edge \t  Weight\n");  
+     for (i = 1; i < vertices; i++)    
+     	printf(" %d <-> %d    %d \n", parent[i], i, g[i][parent[i]]);    
+}   
 
-	for(int i=0; i<v; i++) cout << i << " " << distance[i] << endl;
-}
-
-int main() {
-    int v, e;
-    cin >> v >> e;
-    vector<vector<int>> edges(v, vector<int>(v, 0));
-    for(int i=0; i<e; i++) {
-        int f, s, w;
-        cin >> f >> s >> w;
-        edges[f][s] = w;
-        edges[s][f] = w;
-    }
-
-    printShortestDistance(edges, v);
-    return 0;
+int main()    
+{    
+    int g[vertices][vertices] = {{0, 2, 0, 6, 0},  
+                                 {2, 0, 3, 8, 5},  
+                                 {0, 3, 0, 0, 7},  
+                                 {6, 8, 0, 0, 9},  
+                                 {0, 5, 7, 9, 0}};  
+    prim(g);    
+    return 0;    
 }
